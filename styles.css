@@ -1,0 +1,46 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 32px;
+
+  height: 100vh;
+  margin: 0;
+
+  background-color: thistle;
+}
+
+#container {
+  border: 16px solid cadetblue;
+  width: 80vw;
+  height: 80vh;
+
+  background-color: seashell;
+}
+
+#square {
+  position: relative;
+  left: var(--drag-x, 20px);
+  top: var(--drag-y, 20px);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  height: 100px;
+
+  color: white;
+  font-weight: bold;
+
+  background-color: midnightblue;
+
+  cursor: grab;
+}
+
+#square-text {
+  cursor: text;
+}
+
+.touchedAndHeld {
+  box-shadow: 0 2px 16px #6666;
+}
