@@ -2,6 +2,7 @@ const root = document.documentElement;
 const container = document.getElementById("container");
 const containerRect = container.getBoundingClientRect();
 const square = document.getElementById("square");
+const squareRect = square.getBoundingClientRect();
 const timeout = 0;
 let isDragging = false;
 let timeoutId;
@@ -31,21 +32,6 @@ document.addEventListener("visibilitychange", (e) => {
   if (document.visibilityState === "hidden") {
     stopDragging();
   }
-});
-
-document.body.addEventListener("mousemove", (e) => {
-  // logEvent(e);
-  // console.log(`clientX/Y: ${e.clientX}/${e.clientY}`);
-  if (isDragging) {
-    x = e.clientX - containerRect.x - dragOffsetX;
-    y = e.clientY - containerRect.y - dragOffsetY;
-    root.style.setProperty("--x", `${x}px`);
-    root.style.setProperty("--y", `${y}px`);
-  }
-  // console.log(`pageX/Y: ${e.pageX}/${e.pageY}`);
-  // console.log(`screenX/Y: ${e.screenX}/${e.screenY}`);
-  // console.log(`target.id: ${e.target.id}`);
-  // console.log(`offset; x: ${e.offsetX}, y: ${e.offsetY}`);
 });
 
 function logEvent(e) {
@@ -119,11 +105,19 @@ function handleMouseOver(e) {
 
 function handleMouseMove(e) {
   logEvent(e);
-  e.stopPropagation();
+  console.log(e.clientX);
 
   if (isDragging) {
-    x = e.clientX - containerRect.x - dragOffsetX;
-    y = e.clientY - containerRect.y - dragOffsetY;
+    const preferredX = e.clientX - containerRect.left - dragOffsetX;
+    const preferredY = e.clientY - containerRect.top - dragOffsetY;
+    x = Math.min(
+      Math.max(preferredX, 0),
+      containerRect.width - squareRect.width
+    );
+    y = Math.min(
+      Math.max(preferredY, 0),
+      containerRect.height - squareRect.height
+    );
     root.style.setProperty("--x", `${x}px`);
     root.style.setProperty("--y", `${y}px`);
   }
@@ -131,7 +125,7 @@ function handleMouseMove(e) {
 
 square.addEventListener("mousedown", handleMouseDown);
 square.addEventListener("mouseup", handleMouseUp);
-document.body.addEventListener("mouseenter", handleMouseEnter);
+// document.body.addEventListener("mouseenter", handleMouseEnter);
 // document.body.addEventListener("mouseover", handleMouseOver);
 // container.addEventListener("mouseover", handleMouseOver);
 // container.addEventListener("mouseout", handleMouseOut);
@@ -139,4 +133,5 @@ document.body.addEventListener("mouseenter", handleMouseEnter);
 // container.addEventListener("mouseleave", handleMouseLeave);
 // square.addEventListener("mouseleave", handleMouseLeave);
 // container.addEventListener("mousemove", handleMouseMove);
-document.body.addEventListener("mouseleave", handleMouseLeave);
+// document.body.addEventListener("mouseleave", handleMouseLeave);
+document.body.addEventListener("mousemove", handleMouseMove);
