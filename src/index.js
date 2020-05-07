@@ -5,7 +5,7 @@ const square = document.getElementById("square");
 const squareRect = square.getBoundingClientRect();
 const squircle = document.getElementById("squircle");
 const squircleRect = squircle.getBoundingClientRect();
-const timeout = 0;
+const timeout = 500;
 let isDragging = false;
 let timeoutId;
 let x = 0;
@@ -30,6 +30,7 @@ document.documentElement.addEventListener("keydown", (e) => {
 });
 
 document.addEventListener("blur", (e) => {
+  clearTimeout(timeoutId);
   stopDragging();
 });
 
@@ -37,6 +38,7 @@ document.addEventListener("visibilitychange", (e) => {
   console.log(`visibilitychange; visibilityState: ${document.visibilityState}`);
 
   if (document.visibilityState === "hidden") {
+    clearTimeout(timeoutId);
     stopDragging();
   }
 });
@@ -68,7 +70,6 @@ function startDragging(element, offset) {
 
 function stopDragging() {
   console.log("stopDragging");
-  clearTimeout(timeoutId);
   setIsDragging(false);
   setDraggingStyle(square, false);
 }
@@ -82,14 +83,15 @@ function handleMouseDown(e) {
 
 function handleMouseUp(e) {
   logEventType(e);
+  clearTimeout(timeoutId);
   stopDragging();
 }
 
 function handleMouseOut(e) {
   logEvent(e);
 
-  if (isDragging) {
-    stopDragging();
+  if (!isDragging) {
+    clearTimeout(timeoutId);
   }
 }
 
@@ -154,12 +156,12 @@ function handleMouseMove(e) {
 }
 
 square.addEventListener("mousedown", handleMouseDown);
-square.addEventListener("mouseup", handleMouseUp);
+document.body.addEventListener("mouseup", handleMouseUp);
 // document.body.addEventListener("mouseenter", handleMouseEnter);
 // document.body.addEventListener("mouseover", handleMouseOver);
 // container.addEventListener("mouseover", handleMouseOver);
 // container.addEventListener("mouseout", handleMouseOut);
-// square.addEventListener("mouseout", handleMouseOut);
+square.addEventListener("mouseout", handleMouseOut);
 // container.addEventListener("mouseleave", handleMouseLeave);
 // square.addEventListener("mouseleave", handleMouseLeave);
 // container.addEventListener("mousemove", handleMouseMove);
