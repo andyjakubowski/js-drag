@@ -60,6 +60,8 @@ body {
   left: var(--squircle-x, 0);
   top: var(--squircle-y, 0);
 
+  border-radius: 23px;
+
   width: 60px;
   height: 60px;
 
