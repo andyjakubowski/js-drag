@@ -1,0 +1,16 @@
+{
+  "name": "js-drag",
+  "version": "1.0.0",
+  "description": "Exploring dragging interactions with JavaScript",
+  "main": "index.html",
+  "repository": "https://github.com/andyjakubowski/js-drag",
+  "author": "Andy Jakubowski <hello@andyjakubowski.com>",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "browser-sync": "^2.26.7"
+  },
+  "scripts": {
+    "start": "browser-sync start --server 'src' --files 'src'"
+  }
+}
