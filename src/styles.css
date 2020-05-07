@@ -12,6 +12,7 @@ body {
 }
 
 #container {
+  position: relative;
   /* border: 20px solid cadetblue; */
   width: 600px;
   height: 300px;
@@ -26,9 +27,9 @@ body {
 }
 
 #square {
-  position: relative;
-  left: var(--x, 20px);
-  top: var(--y, 20px);
+  position: absolute;
+  left: var(--square-x, 20px);
+  top: var(--square-y, 20px);
 
   display: flex;
   justify-content: center;
@@ -52,4 +53,19 @@ body {
   box-shadow: 0 2px 16px red;
 
   cursor: grabbing;
+}
+
+#squircle {
+  position: absolute;
+  left: var(--squircle-x, 0);
+  top: var(--squircle-y, 0);
+
+  width: 60px;
+  height: 60px;
+
+  background-color: lightcoral;
+}
+
+#squircle.overlapped {
+  background-color: black;
 }

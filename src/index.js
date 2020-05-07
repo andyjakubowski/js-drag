@@ -3,6 +3,8 @@ const container = document.getElementById("container");
 const containerRect = container.getBoundingClientRect();
 const square = document.getElementById("square");
 const squareRect = square.getBoundingClientRect();
+const squircle = document.getElementById("squircle");
+const squircleRect = squircle.getBoundingClientRect();
 const timeout = 0;
 let isDragging = false;
 let timeoutId;
@@ -10,6 +12,11 @@ let x = 0;
 let y = 0;
 let dragOffsetX = 0;
 let dragOffsetY = 0;
+let squircleX = 360;
+let squircleY = 60;
+
+root.style.setProperty("--squircle-x", `${squircleX}px`);
+root.style.setProperty("--squircle-y", `${squircleY}px`);
 
 document.documentElement.addEventListener("keydown", (e) => {
   switch (e.key) {
@@ -103,24 +110,47 @@ function handleMouseOver(e) {
   logEvent(e);
 }
 
-function handleMouseMove(e) {
-  logEvent(e);
-  console.log(e.clientX);
+function doesOverlapSquircle() {
+  const minXSquare = x;
+  const maxXSquare = x + squareRect.width;
+  const minXSquircle = squircleX;
+  const maxXSquircle = squircleX + squircleRect.width;
+  const minYSquare = y;
+  const maxYSquare = y + squareRect.height;
+  const minYSquircle = squircleY;
+  const maxYSquircle = squircleY + squircleRect.height;
 
-  if (isDragging) {
-    const preferredX = e.clientX - containerRect.left - dragOffsetX;
-    const preferredY = e.clientY - containerRect.top - dragOffsetY;
-    x = Math.min(
-      Math.max(preferredX, 0),
-      containerRect.width - squareRect.width
-    );
-    y = Math.min(
-      Math.max(preferredY, 0),
-      containerRect.height - squareRect.height
-    );
-    root.style.setProperty("--x", `${x}px`);
-    root.style.setProperty("--y", `${y}px`);
+  return (
+    maxXSquircle > minXSquare &&
+    minXSquircle < maxXSquare &&
+    maxYSquircle > minYSquare &&
+    minYSquircle < maxYSquare
+  );
+}
+
+function handleMouseMove(e) {
+  // logEvent(e);
+
+  if (!isDragging) {
+    return;
   }
+
+  const preferredX = e.clientX - containerRect.left - dragOffsetX;
+  const preferredY = e.clientY - containerRect.top - dragOffsetY;
+  x = Math.min(Math.max(preferredX, 0), containerRect.width - squareRect.width);
+  y = Math.min(
+    Math.max(preferredY, 0),
+    containerRect.height - squareRect.height
+  );
+
+  if (doesOverlapSquircle(x, y)) {
+    squircle.classList.toggle("overlapped", true);
+  } else {
+    squircle.classList.toggle("overlapped", false);
+  }
+
+  root.style.setProperty("--square-x", `${x}px`);
+  root.style.setProperty("--square-y", `${y}px`);
 }
 
 square.addEventListener("mousedown", handleMouseDown);
